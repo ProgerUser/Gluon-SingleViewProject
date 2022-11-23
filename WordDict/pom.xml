@@ -5,7 +5,9 @@
 	<groupId>WordDict</groupId>
 	<artifactId>WordDict</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+
 	<build>
+
 		<sourceDirectory>src</sourceDirectory>
 		<resources>
 			<resource>
@@ -65,7 +67,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>app.Maina</mainClass>
+							<mainClass>app.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

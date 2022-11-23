@@ -27,43 +27,58 @@ public class AppC {
 		try {
 
 			if (killProcess()) {
+				String workingDirectory;
+				String OS = (System.getProperty("os.name")).toUpperCase();
 
-			}
+				if (OS.contains("WIN")) {
+					Mess += "\r\n-----------------------\r\nOS Windows\r\n";
+					workingDirectory = System.getenv("AppData");
 
-			String workingDirectory;
-			String OS = (System.getProperty("os.name")).toUpperCase();
+					System.out.println(workingDirectory + "\\Microsoft\\UProof\\");
 
-			if (OS.contains("WIN")) {
-				Mess += "\r\n-----------------------\r\nOS Windows\r\n";
-				workingDirectory = System.getenv("AppData");
+					File cistdic = new File(workingDirectory + "\\Microsoft\\UProof\\CUSTOM.DIC");
+					if (cistdic.exists()) {
+						Mess += "\r\n-----------------------\r\nCUSTOM.DIC существует\r\n";
+						if (cistdic.delete()) {
+							Mess += "\r\n-----------------------\r\nCUSTOM.DIC удален\r\n";
 
-				// System.out.println(workingDirectory + "\\Microsoft\\UProof\\");
+							Mess += "\r\n-----------------------\r\n user.dir =" + System.getProperty("user.dir")
+									+ "\\CUSTOM.DIC" + "\r\n";
+							File source = new File(System.getProperty("user.dir") + "\\CUSTOM.DIC");
+							File dest = new File(workingDirectory + "\\Microsoft\\UProof");
 
-				File cistdic = new File(workingDirectory + "\\Microsoft\\UProof\\CUSTOM.DIC");
-				if (cistdic.exists()) {
-					Mess += "\r\n-----------------------\r\nCUSTOM.DIC существует\r\n";
-					if (cistdic.delete()) {
+							// System.out.println(System.getProperty("user.dir") + "\\CUSTOM.DIC");
+							Mess += "\r\n-----------------------\r\nCUSTOM.DIC Сопирование\r\n";
+							try {
+								FileUtils.copyToDirectory(source, dest);
+								Mess += "\r\n-----------------------\r\nCUSTOM.DIC Успешно\r\n";
+								Message(Mess);
+							} catch (Exception e) {
+								Message(ExceptionUtils.getStackTrace(e));
+							}
+						}
+					} else {
 						Mess += "\r\n-----------------------\r\nCUSTOM.DIC удален\r\n";
 
-						Mess += "\r\n-----------------------\r\n user.dir удален" + System.getProperty("user.dir")
+						Mess += "\r\n-----------------------\r\n user.dir =" + System.getProperty("user.dir")
 								+ "\\CUSTOM.DIC" + "\r\n";
-						File source = new File(System.getProperty("user.dir"));
+						File source = new File(System.getProperty("user.dir") + "\\CUSTOM.DIC");
 						File dest = new File(workingDirectory + "\\Microsoft\\UProof");
 
 						// System.out.println(System.getProperty("user.dir") + "\\CUSTOM.DIC");
 						Mess += "\r\n-----------------------\r\nCUSTOM.DIC Сопирование\r\n";
 						try {
-							FileUtils.copyDirectory(source, dest);
+							FileUtils.copyToDirectory(source, dest);
 							Mess += "\r\n-----------------------\r\nCUSTOM.DIC Успешно\r\n";
 							Message(Mess);
 						} catch (Exception e) {
 							Message(ExceptionUtils.getStackTrace(e));
 						}
 					}
+				} else {
+					workingDirectory = System.getProperty("user.home");
+					workingDirectory += "/Library/Application Support";
 				}
-			} else {
-				workingDirectory = System.getProperty("user.home");
-				workingDirectory += "/Library/Application Support";
 			}
 
 		} catch (Exception e) {
